@@ -2,7 +2,6 @@ var fs = require('fs');
 var del = require('del');
 var gulp = require('gulp');
 var streamqueue = require('streamqueue');
-var karma = require('karma').server;
 var $ = require('gulp-load-plugins')();
 var runSequence = require('run-sequence');
 var conventionalRecommendedBump = require('conventional-recommended-bump');
@@ -21,11 +20,11 @@ var config = {
 
 gulp.task('default', ['build','test']);
 gulp.task('build', ['scripts', 'styles']);
-gulp.task('test', ['build', 'karma']);
+//gulp.task('test', ['build', 'karma']);
 
-gulp.task('watch', ['build','karma-watch'], function() {
-  gulp.watch(['src/**/*.{js,html}'], ['build']);
-});
+// gulp.task('watch', ['build','karma-watch'], function() {
+//   gulp.watch(['src/**/*.{js,html}'], ['build']);
+// });
 
 gulp.task('clean', function(cb) {
   del(['dist', 'temp'], cb);
@@ -88,14 +87,6 @@ gulp.task('styles', ['clean'], function() {
     .pipe($.sourcemaps.write('../dist', {debug: true}))
     .pipe(gulp.dest('dist'));
 
-});
-
-gulp.task('karma', ['build'], function() {
-  karma.start({configFile : __dirname +'/karma.conf.js', singleRun: true});
-});
-
-gulp.task('karma-watch', ['build'], function() {
-  karma.start({configFile :  __dirname +'/karma.conf.js', singleRun: false});
 });
 
 gulp.task('pull', function(done) {

@@ -4,17 +4,7 @@ uis.directive('uiSelectMatch', ['uiSelectConfig', function(uiSelectConfig) {
     require: '^uiSelect',
     replace: true,
     transclude: true,
-    templateUrl: function(tElement) {
-      // Needed so the uiSelect can detect the transcluded content
-      tElement.addClass('ui-select-match');
-
-      var parent = tElement.parent();
-      // Gets theme attribute from parent (ui-select)
-      var theme = getAttribute(parent, 'theme') || uiSelectConfig.theme;
-      var multi = angular.isDefined(getAttribute(parent, 'multiple'));
-
-      return theme + (multi ? '/match-multiple.tpl.html' : '/match.tpl.html');      
-    },
+    template: "<span class=\"ui-select-match\"><span ng-repeat=\"$item in $select.selected track by $index\"><span class=\"ui-select-match-item btn btn-default btn-xs\" tabindex=\"-1\" type=\"button\" ng-disabled=\"$select.disabled\" ng-click=\"$selectMultiple.activeMatchIndex = $index;\" ng-class=\"{\'btn-primary\':$selectMultiple.activeMatchIndex === $index, \'select-locked\':$select.isLocked(this, $index)}\" ui-select-sort=\"$select.selected\"><span class=\"close ui-select-match-close\" ng-hide=\"$select.disabled\" ng-click=\"$selectMultiple.removeChoice($index)\">&nbsp;&times;</span> <span uis-transclude-append=\"\"></span></span></span></span>",
     link: function(scope, element, attrs, $select) {
       $select.lockChoiceExpression = attrs.uiLockChoice;
       attrs.$observe('placeholder', function(placeholder) {
